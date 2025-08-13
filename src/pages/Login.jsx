@@ -7,28 +7,24 @@ import { useEffect } from "react";
 export default function Login() {
   const { user, setUser } = useAuthContext();
   const { register, handleSubmit, formState: { errors }, } = useForm();
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     handleLogin(data);
- 
-  
-
   }
-useEffect(() => {
-   console.log("from fetch");
-  user?.email && navigate("/")
-}, [])
+
+  useEffect(() => {
+    // console.log("from fetch");
+    user?.email && navigate("/")
+  }, [user, navigate])
 
   const handleLogin = (formData) => {
     const fetchData = async () => {
       try {
-       
-        
         const tempUser = userData.find(user => user.email === formData.email && user.password && formData.password) || {};
-console.log("userData: ", userData);
+        console.log("userData: ", userData);
 
         if (tempUser.email) {
           localStorage.setItem("uid", tempUser._id);
@@ -40,12 +36,12 @@ console.log("userData: ", userData);
       }
     };
     fetchData();
-    
+
   }
 
 
   return (
-    <div>
+    user?.email || (<div>
       <h1>Login</h1>
 
 
@@ -69,6 +65,6 @@ console.log("userData: ", userData);
         <button type="submit">Submit</button>
       </form>
 
-    </div>
+    </div>)
   )
 }
